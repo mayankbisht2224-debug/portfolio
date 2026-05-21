@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayank Bisht | Digital Ecosystem</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Quicksand:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CORE ARCHITECTURE & DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --bg-deep: #03030c;
+            --bg-card: rgba(14, 14, 30, 0.7);
+            --bg-card-hover: rgba(22, 22, 45, 0.85);
+            
+            --neon-pink: #ff007a;
+            --neon-pink-glow: rgba(255, 0, 122, 0.45);
+            
+            --neon-purple: #a200ff;
+            --neon-purple-glow: rgba(162, 0, 255, 0.45);
+            
+            --neon-cyan: #00f0ff;
+            --neon-cyan-glow: rgba(0, 240, 255, 0.45);
+            
+            --text-primary: #ffffff;
+            --text-secondary: #9aa8c2;
+            --border-glow: rgba(0, 240, 255, 0.15);
+            
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+            --font-code: 'Space Mono', monospace;
+            
+            --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: 0.2s ease;
+        }
+
+        /* ==========================================================================
+           2. RESET & BASE LAYOUT
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            overflow: hidden; /* Multi-slide system constraints */
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            cursor: none; /* Required for custom interactive cursor */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        a, button, input, textarea {
+            cursor: none; /* Keep tracking matrix custom cursor */
+            outline: none;
+        }
+
+        /* ==========================================================================
+           3. AMBIENT ENGINE & CUSTOM CURSOR
+           ========================================================================== */
+        #cursor-pointer {
+            width: 8px;
+            height: 8px;
+            background-color: var(--neon-cyan);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 12px var(--neon-cyan);
+        }
+
+        #cursor-halo {
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--neon-pink);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
+        }
+
+        .state-interactive #cursor-pointer {
+            width: 4px;
+            height: 4px;
+            background-color: var(--neon-pink);
+        }
+
+        .state-interactive #cursor-halo {
+            width: 64px;
+            height: 64px;
+            border-color: var(--neon-cyan);
+            background: rgba(0, 240, 255, 0.08);
+        }
+
+        #particle-matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .blur-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(140px);
+            z-index: 0;
+            opacity: 0.25;
+            animation: floatOrb 25s infinite alternate ease-in-out;
+        }
+
+        .orb-alpha { width: 450px; height: 450px; background: var(--neon-pink); top: -10%; left: -5%; }
+        .orb-beta { width: 550px; height: 550px; background: var(--neon-purple); bottom: -15%; right: -5%; animation-delay: -5s; }
+        .orb-gamma { width: 350px; height: 350px; background: var(--neon-cyan); top: 40%; left: 50%; animation-delay: -10s; }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, -40px) scale(1.15); }
+        }
+
+        /* ==========================================================================
+           4. NAVIGATION SYSTEMS
+           ========================================================================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.75rem 0;
+            z-index: 1000;
+            background: rgba(3, 3, 12, 0.3);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-terminal {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--neon-cyan-glow);
+            text-decoration: none;
+        }
+
+        .logo-terminal span {
+            color: var(--neon-pink);
+        }
+
+        .nav-indicators {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-tab {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            position: relative;
+            padding: 0.5rem 0;
+            letter-spacing: 1px;
+            transition: var(--transition-fast);
+        }
+
+        .nav-tab.active-tab, .nav-tab:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 8px var(--neon-cyan-glow);
+        }
+
+        .nav-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            transition: var(--transition-smooth);
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+
+        .nav-tab.active-tab::after {
+            width: 100%;
+        }
+
+        /* Lateral Bullet Navigation */
+        .lateral-nav {
+            position: fixed;
+            right: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            z-index: 1000;
+        }
+
+        .bullet {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid transparent;
+            transition: var(--transition-smooth);
+            background-clip: padding-box;
+        }
+
+        .bullet.active-bullet {
+            background: var(--neon-pink);
+            transform: scale(1.4);
+            border: 2px solid rgba(255, 0, 122, 0.3);
+            box-shadow: 0 0 12px var(--neon-pink);
+        }
+
+        /* ==========================================================================
+           5. MULTI-SLIDE WORKSPACE ARCHITECTURE
+           ========================================================================== */
+        .workspace-viewport {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide-deck {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(30px) scale(0.97);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2;
+        }
+
+        .slide-deck.active-slide {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .slide-wrapper {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 60px; /* Counterbalancing locked navigation header */
+        }
+
+        .slide-layout-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* Glassmorphism Structural Core Panels */
+        .glass-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glow);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+            opacity: 0.7;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            box-shadow: 0 25px 60px rgba(0, 240, 255, 0.15);
+            transform: translateY(-4px);
+        }
+
+        /* ==========================================================================
+           SLIDE 1: INITIALIZE MATRIX (INTRO)
+           ========================================================================== */
+        .sys-terminal-tag {
+            font-family: var(--font-code);
+            color: var(--neon-cyan);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .master-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #ffffff, #d1d9e6, var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dynamic-sub-terminal {
+            font-size: 2rem;
+            color: var(--neon-pink);
+            margin-bottom: 2rem;
+            font-weight: 500;
+            min-height: 3.2rem;
+        }
+
+        .typing-cursor-node {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background-color: var(--neon-pink);
+            vertical-align: middle;
+            margin-left: 5px;
+            animation: blinker 1s step-end infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+
+        .interest-cluster {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .interest-node {
+            padding: 0.5rem 1.2rem;
+            background: rgba(162, 0, 255, 0.08);
+            border: 1px solid rgba(162, 0, 255, 0.25);
+            border-radius: 30px;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: #d7b3ff;
+            transition: var(--transition-fast);
+        }
+
+        .interest-node:hover {
+            background: rgba(0, 240, 255, 0.1);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+            box-shadow: 0 0 15px var(--neon-cyan-glow);
+            transform: scale(1.05);
+        }
+
+        /* Abstract Hologram Visuals */
+        .holo-emitter {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 400px;
+        }
+
+        .vector-ring-outer {
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            border: 2px dashed var(--neon-cyan);
+            animation: rotateForward 30s linear infinite;
+            position: absolute;
+        }
+
+        .vector-ring-inner {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-purple);
+            border-left-color: transparent;
+            border-right-color: transparent;
+            animation: rotateReverse 20s linear infinite;
+            position: absolute;
+        }
+
+        .vector-core-identity {
+            position: absolute;
+            font-family: var(--font-display);
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 25px var(--neon-cyan-glow);
+            animation: pulseCore 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes rotateForward { 100% { transform: rotate(360deg); } }
+        @keyframes rotateReverse { 100% { transform: rotate(-360deg); } }
+        @keyframes pulseCore {
+            0% { transform: scale(0.95); opacity: 0.8; text-shadow: 0 0 15px var(--neon-cyan-glow); }
+            100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 35px var(--neon-pink-glow); }
+        }
+
+        /* ==========================================================================
+           SLIDE 2: ACADEMIC MATRIX (QUALIFICATIONS)
+           ========================================================================== */
+        .slide-heading-container {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .slide-heading-main {
+            font-size: 2.5rem;
+            color: #fff;
+            position: relative;
+            display: inline-block;
+        }
+
+        .slide-heading-main::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 70px;
+            height: 3px;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
+        }
+
+        .timeline-matrix-vertical {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline-matrix-vertical::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), transparent);
+        }
+
+        .timeline-node-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-node-wrapper::before {
+            content: '';
+            position: absolute;
+            left: calc(-2.0rem - 6px);
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--bg-deep);
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
+            z-index: 5;
+            transition: var(--transition-fast);
+        }
+
+        .timeline-node-wrapper:hover::before {
+            background: var(--neon-pink);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 12px var(--neon-pink);
+            transform: scale(1.25);
+        }
+
+        .timeline-stamp {
+            font-family: var(--font-code);
+            color: var(--neon-pink);
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .timeline-node-title {
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .timeline-node-institution {
+            font-size: 1.05rem;
+            color: var(--neon-cyan);
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .metric-badge-container {
+            display: inline-block;
+            padding: 0.3rem 0.9rem;
+            background: rgba(255, 0, 122, 0.08);
+            border: 1px solid var(--neon-pink);
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 0.25rem;
+            box-shadow: 0 0 10px rgba(255,0,122,0.15);
+        }
+
+        .academic-focus-panel h3 {
+            font-size: 1.6rem;
+            color: var(--neon-purple);
+            margin-bottom: 1.25rem;
+        }
+
+        .academic-focus-panel p {
+            font-size: 1.05rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ==========================================================================
+           SLIDE 3: SYSTEM ARSENAL (SKILLS)
+           ========================================================================== */
+        .skills-matrix-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        .skill-sub-sector-title {
+            font-size: 1.4rem;
+            color: var(--neon-pink);
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .skill-node-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-meta-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .skill-meta-label .track-name {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .skill-meta-label .track-tier {
+            color: var(--neon-cyan);
+        }
+
+        .bar-frame-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .bar-injector-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+            border-radius: 4px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%; /* Operationalized via JavaScript transition engine */
+            box-shadow: 0 0 12px var(--neon-cyan-glow);
+            transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .software-cluster-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .software-card-node {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .software-card-node:hover {
+            background: rgba(162, 0, 255, 0.05);
+            border-color: rgba(162, 0, 255, 0.3);
+            transform: scale(1.03);
+        }
+
+        .software-card-node h4 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .software-card-node span {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--neon-pink);
+        }
+
+        /* ==========================================================================
+           SLIDE 4: REAL-TIME OPERATION LOGS (EXPERIENCE)
+           ========================================================================== */
+        .operational-grid-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 3.5rem;
+            align-items: center;
+        }
+
+        .experience-header-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .company-meta-callout {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .company-meta-callout span {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan-glow);
+        }
+
+        .operation-location-tag {
+            font-family: var(--font-code);
+            font-size: 1rem;
+            color: var(--neon-pink);
+            display: block;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .functional-log-details p {
+            font-size: 1.15rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .highlight-accent-glow {
+            color: #fff;
+            font-weight: 600;
+            box-shadow: inset 0 -2px 0 var(--neon-cyan);
+            padding-bottom: 2px;
+        }
+
+        .telemetry-status-panel {
+            border-left: 3px solid var(--neon-purple);
+            padding-left: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .telemetry-status-panel span {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .telemetry-status-panel p {
+            font-size: 1.1rem;
+            color: #fff;
+            font-style: italic;
+        }
+
+        /* Geometric Visualization Module */
+        .matrix-datacube-wrapper {
+            position: relative;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .datacube-wireframe {
+            width: 180px;
+            height: 180px;
+            border: 2px solid var(--neon-purple);
+            position: absolute;
+            transform: rotateX(45deg) rotateZ(45deg);
+            animation: cubeSpit 12s infinite linear;
+            box-shadow: 0 0 20px var(--neon-purple-glow), inset 0 0 20px var(--neon-purple-glow);
+        }
+
+        .datacube-wireframe-secondary {
+            width: 120px;
+            height: 120px;
+            border: 2px dashed var(--neon-cyan);
+            position: absolute;
+            transform: rotateX(45deg) rotateZ(45deg);
+            animation: cubeSpitInverse 8s infinite linear;
+            box-shadow: 0 0 15px var(--neon-cyan-glow);
+        }
+
+        @annotation { "cubeSpit keyframes context" }
+        @keyframes cubeSpit {
+            0% { transform: rotateX(60deg) rotateZ(0deg); }
+            100% { transform: rotateX(60deg) rotateZ(360deg); }
+        }
+        @keyframes cubeSpitInverse {
+            0% { transform: rotateX(60deg) rotateZ(360deg); }
+            100% { transform: rotateX(60deg) rotateZ(0deg); }
+        }
+
+        /* ==========================================================================
+           SLIDE 5: SECURE COMM LINK (CONTACT)
+           ========================================================================== */
+        .comms-grid-structural {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 3.5rem;
+        }
+
+        .comms-directory-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comms-anchor-node {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: var(--transition-smooth);
+        }
+
+        .comms-anchor-node:hover {
+            background: rgba(0, 240, 255, 0.04);
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .comms-icon-module {
+            width: 54px;
+            height: 54px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--neon-cyan);
+            font-size: 1.3rem;
+            transition: var(--transition-smooth);
+        }
+
+        .comms-anchor-node:hover .comms-icon-module {
+            background: var(--neon-cyan);
+            color: var(--bg-deep);
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+
+        .comms-meta-details span {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .comms-meta-details p {
+            font-family: var(--font-code);
+            font-size: 1.15rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Interface Input Controls */
+        .secure-transmission-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-input-container {
+            position: relative;
+        }
+
+        .form-input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.1rem;
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input-field:focus {
+            border-color: var(--neon-purple);
+            background: rgba(162, 0, 255, 0.04);
+            box-shadow: 0 0 15px rgba(162, 0, 255, 0.2);
+        }
+
+        textarea.form-input-field {
+            height: 120px;
+            resize: none;
+        }
+
+        .form-input-label {
+            position: absolute;
+            left: 1.1rem;
+            top: 1.1rem;
+            color: var(--text-secondary);
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .form-input-field:focus ~ .form-input-label,
+        .form-input-field:valid ~ .form-input-label {
+            top: -0.6rem;
+            left: 0.9rem;
+            font-size: 0.75rem;
+            color: var(--neon-purple);
+            background: #080818;
+            padding: 0 0.4rem;
+        }
+
+        .packet-submit-button {
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            padding: 1.1rem;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .packet-submit-button:hover {
+            background: var(--neon-pink);
+            color: #fff;
+            box-shadow: 0 0 25px var(--neon-pink-glow);
+        }
+
+        /* ==========================================================================
+           6. INTERFACE FOOTER METRICS
+           ========================================================================== */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.25rem 0;
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            background: rgba(3, 3, 12, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-container span {
+            color: var(--neon-cyan);
+        }
+
+        /* ==========================================================================
+           7. RESPONSIVE MATRIX OVERRIDES
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            html, body { overflow-y: auto; height: auto; cursor: auto; }
+            #cursor-pointer, #cursor-halo { display: none; }
+            .slide-deck { position: relative; opacity: 1; pointer-events: auto; transform: none; min-height: 100vh; padding: 100px 0; display: block; }
+            .slide-layout-grid, .skills-matrix-layout, .operational-grid-layout, .comms-grid-structural { grid-template-columns: 1fr; gap: 2.5rem; }
+            .lateral-nav { display: none; }
+            .holo-emitter { height: 200px; margin-top: 2rem; }
+            .vector-ring-outer { width: 200px; height: 200px; }
+            .vector-ring-inner { width: 160px; height: 160px; }
+            .vector-core-identity { font-size: 3rem; }
+            nav { position: absolute; }
+            footer { position: relative; margin-top: 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor-pointer"></div>
+    <div id="cursor-halo"></div>
+
+    <canvas id="particle-matrix"></canvas>
+    <div class="blur-orb orb-alpha"></div>
+    <div class="blur-orb orb-beta"></div>
+    <div class="blur-orb orb-gamma"></div>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo-terminal" onclick="switchSlideDeck(0); return false;">MB<span>.</span>CORE</a>
+            <div class="nav-indicators">
+                <button class="nav-tab active-tab" onclick="switchSlideDeck(0)">01. Initialize</button>
+                <button class="nav-tab" onclick="switchSlideDeck(1)">02. Academic_Matrix</button>
+                <button class="nav-tab" onclick="switchSlideDeck(2)">03. Arsenal</button>
+                <button class="nav-tab" onclick="switchSlideDeck(3)">04. Log_Operations</button>
+                <button class="nav-tab" onclick="switchSlideDeck(4)">05. Comm_Link</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="lateral-nav">
+        <div class="bullet active-bullet" onclick="switchSlideDeck(0)"></div>
+        <div class="bullet" onclick="switchSlideDeck(1)"></div>
+        <div class="bullet" onclick="switchSlideDeck(2)"></div>
+        <div class="bullet" onclick="switchSlideDeck(3)"></div>
+        <div class="bullet" onclick="switchSlideDeck(4)"></div>
+    </div>
+
+    <div class="workspace-viewport">
+
+        <div class="slide-deck active-slide">
+            <div class="slide-wrapper">
+                <div class="slide-layout-grid">
+                    <div class="intro-profile-text">
+                        <span class="sys-terminal-tag">> PIPELINE_STATUS: SECURE</span>
+                        <h1 class="master-title">MAYANK BISHT</h1>
+                        <div class="dynamic-sub-terminal">
+                            > <span id="text-injector-node"></span><span class="typing-cursor-node"></span>
+                        </div>
+                        <p>
+                            A 17-year-old developer and digital marketer operating from Surat. Driven by a fundamental passion for testing raw concepts, decoding complex behavioral patterns, and building optimized visual content. Curating cross-functional experiences.
+                        </p>
+                        <div class="interest-cluster">
+                            <span class="interest-node">#Psychology Exploration</span>
+                            <span class="interest-node">#Scientific Literature</span>
+                            <span class="interest-node">#Manga Narrative Analysis</span>
+                            <span class="interest-node">#Conceptual Research</span>
+                        </div>
+                    </div>
+                    <div class="holo-emitter">
+                        <div class="vector-ring-outer"></div>
+                        <div class="vector-ring-inner"></div>
+                        <div class="vector-core-identity">MB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-deck">
+            <div class="slide-wrapper">
+                <div class="slide-layout-grid">
+                    <div class="timeline-matrix-vertical">
+                        
+                        <div class="timeline-node-wrapper">
+                            <span class="timeline-stamp">Target Objective</span>
+                            <h3 class="timeline-node-title">Bachelor of Business Administration</h3>
+                            <h4 class="timeline-node-institution">V. B. Shah Institute of Management, Amroli</h4>
+                            <p style="font-size: 0.95rem;">Actively processing academic admission workflows to specialize in organizational development, data orchestration, and corporate administrative scaling metrics.</p>
+                        </div>
+
+                        <div class="timeline-node-wrapper">
+                            <span class="timeline-stamp">Higher Secondary Education</span>
+                            <h3 class="timeline-node-title">Standard 12th Matrix Completion</h3>
+                            <h4 class="timeline-node-institution">Gujarat Secondary and Higher Secondary Education Board</h4>
+                            <div class="metric-badge-container">Performance Profile: 77%</div>
+                        </div>
+
+                        <div class="timeline-node-wrapper">
+                            <span class="timeline-stamp">Secondary Education Metrics</span>
+                            <h3 class="timeline-node-title">Standard 10th Foundation Calibration</h3>
+                            <h4 class="timeline-node-institution">GSEB Academic Pipeline</h4>
+                            <div class="metric-badge-container">Performance Profile: 66%</div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="glass-panel academic-focus-panel">
+                        <h3>Institutional Objective</h3>
+                        <p>
+                            Targeting integration into <span style="color:var(--neon-cyan); font-weight:600;">Vanita Vishram Women's College managed V. B. Shah Institute of Management</span> to build operational strategies on top of modern analytical frameworks.
+                        </p>
+                        <p>
+                            The core curriculum coordinates management logistics, commercial infrastructure paradigms, and computational workflow metrics—aligning with my present operational trajectory.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-deck">
+            <div class="slide-wrapper">
+                <div class="skills-matrix-layout">
+                    
+                    <div class="glass-panel">
+                        <h3 class="skill-sub-sector-title">
+                            Digital Marketing & Admin
+                        </h3>
+                        
+                        <div class="skill-node-block">
+                            <div class="skill-meta-label">
+                                <span class="track-name">Digital Growth Marketing</span>
+                                <span class="track-tier">Velosis Calibrated</span>
+                            </div>
+                            <div class="bar-frame-bg">
+                                <div class="bar-injector-fill" data-target-width="85%"></div>
+                            </div>
+                        </div>
+
+                        <div class="skill-node-block">
+                            <div class="skill-meta-label">
+                                <span class="track-name">Data Management & Logistics</span>
+                                <span class="track-tier">Operational Baseline</span>
+                            </div>
+                            <div class="bar-frame-bg">
+                                <div class="bar-injector-fill" data-target-width="90%"></div>
+                            </div>
+                        </div>
+
+                        <div class="skill-node-block">
+                            <div class="skill-meta-label">
+                                <span class="track-name">Course on Computer Concepts (CCC)</span>
+                                <span class="track-tier">Certified | Velosis</span>
+                            </div>
+                            <div class="bar-frame-bg">
+                                <div class="bar-injector-fill" data-target-width="100%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel">
+                        <h3 class="skill-sub-sector-title">
+                            Visual Post-Production & Assets
+                        </h3>
+                        <p style="font-size: 1rem; margin-bottom: 1.5rem;">
+                            Intermediate structural command over timeline-based video manipulation mechanics, spatial framing assets, keyframe motion dynamics, and graphic compilation pipelines.
+                        </p>
+                        
+                        <div class="software-cluster-grid">
+                            <div class="software-card-node">
+                                <h4>Alight Motion</h4>
+                                <span>Motion Design</span>
+                            </div>
+                            <div class="software-card-node">
+                                <h4>CapCut Pro</h4>
+                                <span>Timeline Editing</span>
+                            </div>
+                            <div class="software-card-node">
+                                <h4>Graphic Design</h4>
+                                <span>Asset Synthesis</span>
+                            </div>
+                            <div class="software-card-node">
+                                <h4>UI Composition</h4>
+                                <span>Interface Logic</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-deck">
+            <div class="slide-wrapper">
+                <div class="glass-panel operational-grid-layout">
+                    <div class="functional-log-details">
+                        <div class="experience-header-block">
+                            <span class="sys-terminal-tag">> ACTIVE_CONCURRENT_DEPLOYMENT</span>
+                            <h2 class="company-meta-callout">DEV DIAM</h2>
+                            <span class="operation-location-tag">Mahidarpura, Diamond Hub Sector</span>
+                        </div>
+                        <p>
+                            Engaged as an active <span class="highlight-accent-glow">Data Entry Operator</span>, maintaining database integrity, structural logging operations, and information taxonomy validation rules inside Surat's high-velocity diamond district.
+                        </p>
+                        <p>
+                            This deliberate assignment serves to lock down <span class="highlight-accent-glow">concrete corporate workflows and industry operations</span> prior to theoretical business management analysis at the university scale.
+                        </p>
+                        <div class="telemetry-status-panel">
+                            <span>Operational Telemetry Value</span>
+                            <p>"Acquiring structural workspace performance logs and tactical data experience before initializing BBA track protocols."</p>
+                        </div>
+                    </div>
+                    <div class="matrix-datacube-wrapper">
+                        <div class="datacube-wireframe"></div>
+                        <div class="datacube-wireframe-secondary"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-deck">
+            <div class="slide-wrapper">
+                <div class="comms-grid-structural">
+                    
+                    <div class="comms-directory-wrapper">
+                        <div class="slide-heading-container">
+                            <h2 class="slide-heading-main" data-text="SECURE_COMMS">Secure_Comms</h2>
+                        </div>
+                        <p style="margin-bottom: 1rem; font-size: 1rem;">Initialize an automated handshake protocol across verified routing frequencies:</p>
+                        
+                        <a href="tel:7990976504" class="comms-anchor-node">
+                            <div class="comms-icon-module">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                            </div>
+                            <div class="comms-meta-details">
+                                <span>Voice Telemetry Channel</span>
+                                <p>+91 7990976504</p>
+                            </div>
+                        </a>
+
+                        <a href="mailto:mayankbisht2224@gmail.com" class="comms-anchor-node">
+                            <div class="comms-icon-module">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            </div>
+                            <div class="comms-meta-details">
+                                <span>Encrypted Message Relay</span>
+                                <p>mayankbisht2224@gmail.com</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="glass-panel">
+                        <form class="secure-transmission-form" onsubmit="event.preventDefault(); alert('Packet transmitted securely over current link parameters.');">
+                            <div class="form-input-container">
+                                <input type="text" class="form-input-field" required id="form-alias">
+                                <label class="form-input-label" for="form-alias">Identity Alias</label>
+                            </div>
+                            <div class="form-input-container">
+                                <input type="email" class="form-input-field" required id="form-frequency">
+                                <label class="form-input-label" for="form-frequency">Return Routing (Email)</label>
+                            </div>
+                            <div class="form-input-container">
+                                <textarea class="form-input-field" required id="form-payload"></textarea>
+                                <label class="form-input-label" for="form-payload">Information Payload</label>
+                            </div>
+                            <button type="submit" class="packet-submit-button">TRANSMIT PACKET</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div>CORE STATUS: <span>ONLINE</span></div>
+            <div>COORDINATES: SURAT, IN</div>
+            <div>TEMPORAL INDEX: &copy; 2026 MB.SYS</div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- A. Elastic Interaction Cursor Tracking ---
+            const pointerNode = document.getElementById('cursor-pointer');
+            const haloNode = document.getElementById('cursor-halo');
+            
+            document.addEventListener('mousemove', (coordinates) => {
+                const horizontalX = coordinates.clientX;
+                const verticalY = coordinates.clientY;
+                
+                pointerNode.style.left = `${horizontalX}px`;
+                pointerNode.style.top = `${verticalY}px`;
+                
+                haloNode.animate({
+                    left: `${horizontalX}px`,
+                    top: `${verticalY}px`
+                }, { duration: 400, fill: "forwards", easing: "ease-out" });
+            });
+
+            // Interactive element state modifiers
+            const clickables = document.querySelectorAll('a, button, input, textarea, .bullet');
+            clickables.forEach(node => {
+                node.addEventListener('mouseenter', () => document.body.classList.add('state-interactive'));
+                node.addEventListener('mouseleave', () => document.body.classList.remove('state-interactive'));
+            });
+
+            // --- B. Slide Deck Navigation Core Logic ---
+            const slides = document.querySelectorAll('.slide-deck');
+            const navigationTabs = document.querySelectorAll('.nav-tab');
+            const linearBullets = document.querySelectorAll('.bullet');
+            let workingSlideIndex = 0;
+            let navigationThrottleActive = false;
+
+            window.switchSlideDeck = function(requestedIndex) {
+                if (requestedIndex < 0 || requestedIndex >= slides.length) return;
+                
+                // Clear active states across infrastructure components
+                slides[workingSlideIndex].classList.remove('active-slide');
+                navigationTabs[workingSlideIndex].classList.remove('active-tab');
+                linearBullets[workingSlideIndex].classList.remove('active-bullet');
+                
+                // Establish new indexes and apply activation states
+                workingSlideIndex = requestedIndex;
+                slides[workingSlideIndex].classList.add('active-slide');
+                navigationTabs[workingSlideIndex].add ? navigationTabs[workingSlideIndex].add('active-tab') : navigationTabs[workingSlideIndex].classList.add('active-tab');
+                linearBullets[workingSlideIndex].classList.add('active-bullet');
+
+                // Evaluate Skill Matrix Progress Line Injections dynamically
+                if (workingSlideIndex === 2) {
+                    const progressBars = slides[workingSlideIndex].querySelectorAll('.bar-injector-fill');
+                    progressBars.forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-target-width');
+                    });
+                }
+            };
+
+            // Capture mouse wheel dynamics for sliding translation vectors
+            window.addEventListener('wheel', (scrollEvent) => {
+                // Ignore device gesture routing on low resolution breakpoints
+                if (window.innerWidth <= 1024) return;
+
+                if (navigationThrottleActive) return;
+                navigationThrottleActive = true;
+
+                if (scrollEvent.deltaY > 0) {
+                    if (workingSlideIndex < slides.length - 1) {
+                        switchSlideDeck(workingSlideIndex + 1);
+                    }
+                } else {
+                    if (workingSlideIndex > 0) {
+                        switchSlideDeck(workingSlideIndex - 1);
+                    }
+                }
+
+                setTimeout(() => { navigationThrottleActive = false; }, 900);
+            });
+
+            // --- C. Text Compilation Node (Typewriter Script Engine) ---
+            const injectionElement = document.getElementById("text-injector-node");
+            const structuralLexicon = ["Digital Marketer", "Video Editor", "Concept Researcher", "Data Analyst"];
+            let phraseCycleIndex = 0;
+            let characterCycleIndex = 0;
+            let processPhaseDeleting = false;
+
+            function sequenceTypewriterWorkflow() {
+                const activeTargetPhrase = structuralLexicon[phraseCycleIndex];
+                
+                if (processPhaseDeleting) {
+                    injectionElement.textContent = activeTargetPhrase.substring(0, characterCycleIndex - 1);
+                    characterCycleIndex--;
+                } else {
+                    injectionElement.textContent = activeTargetPhrase.substring(0, characterCycleIndex + 1);
+                    characterCycleIndex++;
+                }
+
+                let chronologicalSpeed = processPhaseDeleting ? 40 : 90;
+
+                if (!processPhaseDeleting && characterCycleIndex === activeTargetPhrase.length) {
+                    chronologicalSpeed = 2200; // Pause execution when structural string is complete
+                    processPhaseDeleting = true;
+                } else if (processPhaseDeleting && characterCycleIndex === 0) {
+                    processPhaseDeleting = false;
+                    phraseCycleIndex = (phraseCycleIndex + 1) % structuralLexicon.length;
+                    chronologicalSpeed = 400; // Break segment prior to processing secondary string
+                }
+
+                setTimeout(sequenceTypewriterWorkflow, chronologicalSpeed);
+            }
+            
+            // Invoke script engine loops
+            sequenceTypewriterWorkflow();
+
+            // --- D. Multi-Color Mathematical Particle System Generator ---
+            const gridCanvas = document.getElementById('particle-matrix');
+            const renderingContext = gridCanvas.getContext('2d');
+            let runtimeArray = [];
+
+            function calibrateCanvasGeometry() {
+                gridCanvas.width = window.innerWidth;
+                gridCanvas.height = window.innerHeight;
+                generateInitialNodes();
+            }
+
+            class SpaceNode {
+                constructor(coordX, coordY, trajectoryX, trajectoryY, nodeScale, architecturalColor) {
+                    this.x = coordX; this.y = coordY;
+                    this.dx = trajectoryX; this.dy = trajectoryY;
+                    this.size = nodeScale; this.color = architecturalColor;
+                }
+                render() {
+                    renderingContext.beginPath();
+                    renderingContext.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    renderingContext.fillStyle = this.color;
+                    renderingContext.fill();
+                }
+                recalculate() {
+                    if (this.x > gridCanvas.width || this.x < 0) this.dx = -this.dx;
+                    if (this.y > gridCanvas.height || this.y < 0) this.dy = -this.dy;
+                    this.x += this.dx;
+                    this.y += this.dy;
+                    this.render();
+                }
+            }
+
+            function generateInitialNodes() {
+                runtimeArray = [];
+                let calculatedDensityCoefficient = (gridCanvas.width * gridCanvas.height) / 11000;
+                let coreColorSpectra = ['#00f0ff', '#a200ff', '#ff007a', 'rgba(255,255,255,0.2)'];
+
+                for (let iteration = 0; iteration < calculatedDensityCoefficient; iteration++) {
+                    let size = (Math.random() * 1.5) + 0.5;
+                    let x = Math.random() * (innerWidth - size * 2);
+                    let y = Math.random() * (innerHeight - size * 2);
+                    let dx = (Math.random() * 0.6) - 0.3;
+                    let dy = (Math.random() * 0.6) - 0.3;
+                    let color = coreColorSpectra[Math.floor(Math.random() * coreColorSpectra.length)];
+                    runtimeArray.push(new SpaceNode(x, y, dx, dy, size, color));
+                }
+            }
+
+            function frameProcessLoop() {
+                requestAnimationFrame(frameProcessLoop);
+                renderingContext.clearRect(0, 0, innerWidth, innerHeight);
+                for (let index = 0; index < runtimeArray.length; index++) {
+                    runtimeArray[index].recalculate();
+                }
+                interlinkVectorNodes();
+            }
+
+            function interlinkVectorNodes() {
+                for (let elementOuter = 0; elementOuter < runtimeArray.length; elementOuter++) {
+                    for (let elementInner = elementOuter; elementInner < runtimeArray.length; elementInner++) {
+                        let spatialDistanceVector = ((runtimeArray[elementOuter].x - runtimeArray[elementInner].x) * (runtimeArray[elementOuter].x - runtimeArray[elementInner].x))
+                                                     + ((runtimeArray[elementOuter].y - runtimeArray[elementInner].y) * (runtimeArray[elementOuter].y - runtimeArray[elementInner].y));
+                        if (spatialDistanceVector < (gridCanvas.width / 12) * (gridCanvas.height / 12)) {
+                            let factorOpacity = 1 - (spatialDistanceVector / 14000);
+                            renderingContext.strokeStyle = `rgba(0, 240, 255, ${factorOpacity * 0.06})`;
+                            renderingContext.lineWidth = 1;
+                            renderingContext.beginPath();
+                            renderingContext.moveTo(runtimeArray[elementOuter].x, runtimeArray[elementOuter].y);
+                            renderingContext.lineTo(runtimeArray[elementInner].x, runtimeArray[elementInner].y);
+                            renderingContext.stroke();
+                        }
+                    }
+                }
+            }
+
+            window.addEventListener('resize', calibrateCanvasGeometry);
+            calibrateCanvasGeometry();
+            frameProcessLoop();
+        });
+    </script>
+</body>
+</html>
