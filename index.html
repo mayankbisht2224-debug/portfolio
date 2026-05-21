@@ -3,44 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mayank Bisht | Digital Ecosystem</title>
+    <title>Mayank Bisht | Professional Portfolio</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Quicksand:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Quicksand:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         /* ==========================================================================
-           1. CORE ARCHITECTURE & DESIGN SYSTEM
+           1. CORE DESIGN SYSTEM
            ========================================================================== */
         :root {
-            --bg-deep: #03030c;
-            --bg-card: rgba(14, 14, 30, 0.7);
-            --bg-card-hover: rgba(22, 22, 45, 0.85);
+            --bgbase: #03030a;
+            --bgcard: rgba(15, 15, 30, 0.7);
             
-            --neon-pink: #ff007a;
-            --neon-pink-glow: rgba(255, 0, 122, 0.45);
+            --colorpink: #ff007a;
+            --colorpinkglow: rgba(255, 0, 122, 0.4);
             
-            --neon-purple: #a200ff;
-            --neon-purple-glow: rgba(162, 0, 255, 0.45);
+            --colorpurple: #a200ff;
+            --colorpurpleglow: rgba(162, 0, 255, 0.4);
             
-            --neon-cyan: #00f0ff;
-            --neon-cyan-glow: rgba(0, 240, 255, 0.45);
+            --colorcyan: #00f0ff;
+            --colorcyanglow: rgba(0, 240, 255, 0.4);
             
-            --text-primary: #ffffff;
-            --text-secondary: #9aa8c2;
-            --border-glow: rgba(0, 240, 255, 0.15);
+            --textmain: #ffffff;
+            --textmuted: #9aa8c2;
+            --borderglass: rgba(0, 240, 255, 0.15);
             
-            --font-display: 'Orbitron', sans-serif;
-            --font-body: 'Quicksand', sans-serif;
-            --font-code: 'Space Mono', monospace;
+            --fontheading: 'Orbitron', sans-serif;
+            --fontbody: 'Quicksand', sans-serif;
+            --fontcode: 'Space Mono', monospace;
             
-            --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-fast: 0.2s ease;
+            --transitionsmooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         /* ==========================================================================
-           2. RESET & BASE LAYOUT
+           2. GLOBAL RESET & BASE LAYOUT
            ========================================================================== */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -48,734 +46,551 @@
             padding: 0;
         }
 
-        html, body {
-            overflow: hidden; /* Multi-slide system constraints */
-            width: 100%;
-            height: 100%;
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            cursor: none; /* Required for custom interactive cursor */
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
+        body {
+            background-color: var(--bgbase);
+            color: var(--textmain);
+            font-family: var(--fontbody);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Custom tracking cursor rules (hidden on mobile devices) */
+        #cursordot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--colorcyan);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px var(--colorcyan);
+        }
+
+        #cursorcircle {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--colorpink);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, border-color 0.2s;
+        }
+
+        body.ishovering #cursorcircle {
+            width: 55px;
+            height: 55px;
+            border-color: var(--colorcyan);
+            background: rgba(0, 240, 255, 0.05);
+        }
+
+        /* Ambient blur orbs */
+        .bgglow {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(130px);
+            z-index: -1;
+            opacity: 0.2;
+        }
+        .glow1 { width: 400px; height: 400px; background: var(--colorpink); top: 10%; left: -10%; }
+        .glow2 { width: 500px; height: 500px; background: var(--colorpurple); bottom: 10%; right: -10%; }
+
+        /* Scrollbar aesthetics */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bgbase); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--colorcyan), var(--colorpurple));
+            border-radius: 4px;
+        }
+
+        /* Typography */
         h1, h2, h3, h4 {
-            font-family: var(--font-display);
+            font-family: var(--fontheading);
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         p {
-            color: var(--text-secondary);
+            color: var(--textmuted);
             font-size: 1.1rem;
-            line-height: 1.6;
         }
 
         a, button, input, textarea {
-            cursor: none; /* Keep tracking matrix custom cursor */
-            outline: none;
+            cursor: pointer;
+        }
+
+        /* Container scaffolding */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        section {
+            padding: 8rem 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sectiontitlewrapper {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .sectiontitle {
+            font-size: 2.5rem;
+            display: inline-block;
+            position: relative;
+            color: var(--textmain);
+        }
+
+        .sectiontitle::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--colorcyan), var(--colorpink));
+            box-shadow: 0 0 8px var(--colorcyan);
+        }
+
+        /* Glass Panel Base Card */
+        .glasspanel {
+            background: var(--bgcard);
+            border: 1px solid var(--borderglass);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: var(--transitionsmooth);
+        }
+
+        .glasspanel:hover {
+            border-color: rgba(0, 240, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.1);
         }
 
         /* ==========================================================================
-           3. AMBIENT ENGINE & CUSTOM CURSOR
-           ========================================================================== */
-        #cursor-pointer {
-            width: 8px;
-            height: 8px;
-            background-color: var(--neon-cyan);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 12px var(--neon-cyan);
-        }
-
-        #cursor-halo {
-            width: 44px;
-            height: 44px;
-            border: 2px solid var(--neon-pink);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
-        }
-
-        .state-interactive #cursor-pointer {
-            width: 4px;
-            height: 4px;
-            background-color: var(--neon-pink);
-        }
-
-        .state-interactive #cursor-halo {
-            width: 64px;
-            height: 64px;
-            border-color: var(--neon-cyan);
-            background: rgba(0, 240, 255, 0.08);
-        }
-
-        #particle-matrix {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .blur-orb {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(140px);
-            z-index: 0;
-            opacity: 0.25;
-            animation: floatOrb 25s infinite alternate ease-in-out;
-        }
-
-        .orb-alpha { width: 450px; height: 450px; background: var(--neon-pink); top: -10%; left: -5%; }
-        .orb-beta { width: 550px; height: 550px; background: var(--neon-purple); bottom: -15%; right: -5%; animation-delay: -5s; }
-        .orb-gamma { width: 350px; height: 350px; background: var(--neon-cyan); top: 40%; left: 50%; animation-delay: -10s; }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, -40px) scale(1.15); }
-        }
-
-        /* ==========================================================================
-           4. NAVIGATION SYSTEMS
+           3. NAVIGATION BAR
            ========================================================================== */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 1.75rem 0;
+            padding: 1.5rem 0;
             z-index: 1000;
-            background: rgba(3, 3, 12, 0.3);
-            backdrop-filter: blur(20px);
+            background: rgba(3, 3, 10, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transitionsmooth);
         }
 
-        .nav-container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto;
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(3, 3, 10, 0.85);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .navcontainer {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo-terminal {
-            font-family: var(--font-display);
-            font-size: 1.6rem;
+        .logo {
+            font-family: var(--fontheading);
+            font-size: 1.4rem;
             font-weight: 900;
-            color: var(--text-primary);
-            text-shadow: 0 0 10px var(--neon-cyan-glow);
+            color: #fff;
             text-decoration: none;
         }
 
-        .logo-terminal span {
-            color: var(--neon-pink);
-        }
+        .logo span { color: var(--colorcyan); }
 
-        .nav-indicators {
+        .navlinks {
             display: flex;
-            gap: 2.5rem;
+            gap: 2rem;
             list-style: none;
         }
 
-        .nav-tab {
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            background: none;
-            border: none;
+        .navlink {
+            font-family: var(--fontcode);
+            font-size: 0.9rem;
+            color: var(--textmain);
+            text-decoration: none;
             position: relative;
-            padding: 0.5rem 0;
-            letter-spacing: 1px;
-            transition: var(--transition-fast);
+            padding: 0.25rem 0;
+            transition: 0.2s ease;
         }
 
-        .nav-tab.active-tab, .nav-tab:hover {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 8px var(--neon-cyan-glow);
-        }
-
-        .nav-tab::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
-            transition: var(--transition-smooth);
-            box-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        .nav-tab.active-tab::after {
-            width: 100%;
-        }
-
-        /* Lateral Bullet Navigation */
-        .lateral-nav {
-            position: fixed;
-            right: 2.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            z-index: 1000;
-        }
-
-        .bullet {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid transparent;
-            transition: var(--transition-smooth);
-            background-clip: padding-box;
-        }
-
-        .bullet.active-bullet {
-            background: var(--neon-pink);
-            transform: scale(1.4);
-            border: 2px solid rgba(255, 0, 122, 0.3);
-            box-shadow: 0 0 12px var(--neon-pink);
+        .navlink:hover {
+            color: var(--colorcyan);
+            text-shadow: 0 0 8px var(--colorcyanglow);
         }
 
         /* ==========================================================================
-           5. MULTI-SLIDE WORKSPACE ARCHITECTURE
+           4. HERO SECTION
            ========================================================================== */
-        .workspace-viewport {
-            width: 100%;
-            height: 100%;
-            position: relative;
-        }
-
-        .slide-deck {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: flex;
+        .herogrid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2rem;
             align-items: center;
+        }
+
+        .herotag {
+            font-family: var(--fontcode);
+            color: var(--colorcyan);
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .herotitle {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #fff, #b5c7e3, var(--colorcyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .herosubtitle {
+            font-size: 1.8rem;
+            color: var(--colorpink);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            min-height: 2.5rem;
+        }
+
+        .cursorblink {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: var(--colorpink);
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s infinite step-end;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .btngroup {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            font-family: var(--fontheading);
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: var(--transitionsmooth);
+        }
+
+        .btnprimary {
+            background: transparent;
+            color: #fff;
+            border: 1px solid var(--colorcyan);
+            box-shadow: 0 0 15px var(--colorcyanglow);
+        }
+
+        .btnprimary:hover {
+            background: var(--colorcyan);
+            color: #03030a;
+            box-shadow: 0 0 25px var(--colorcyan);
+        }
+
+        .btnsecondary {
+            background: transparent;
+            color: var(--colorpurple);
+            border: 1px solid var(--colorpurple);
+        }
+
+        .btnsecondary:hover {
+            background: rgba(162, 0, 255, 0.1);
+            box-shadow: 0 0 20px var(--colorpurpleglow);
+        }
+
+        .hologramframe {
+            position: relative;
+            display: flex;
             justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(30px) scale(0.97);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 2;
+            align-items: center;
+            height: 350px;
         }
 
-        .slide-deck.active-slide {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0) scale(1);
+        .ringouter {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 2px dashed var(--colorcyan);
+            animation: spin 35s linear infinite;
+            position: absolute;
         }
 
-        .slide-wrapper {
-            width: 90%;
-            max-width: 1200px;
-            margin-top: 60px; /* Counterbalancing locked navigation header */
+        .ringinner {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            border: 2px solid var(--colorpurple);
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            animation: spinreverse 20s linear infinite;
+            position: absolute;
         }
 
-        .slide-layout-grid {
+        .coretext {
+            position: absolute;
+            font-family: var(--fontheading);
+            font-size: 4rem;
+            color: #fff;
+            text-shadow: 0 0 20px var(--colorcyanglow);
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes spinreverse { 100% { transform: rotate(-360deg); } }
+
+        /* ==========================================================================
+           5. ABOUT & EXPERIENCES
+           ========================================================================== */
+        .aboutlayout {
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
             gap: 4rem;
             align-items: center;
         }
 
-        /* Glassmorphism Structural Core Panels */
-        .glass-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border-glow);
-            backdrop-filter: blur(16px);
-            border-radius: 20px;
-            padding: 3rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
+        .abouttext p {
+            margin-bottom: 1.5rem;
         }
 
-        .glass-panel::before {
-            content: '';
+        .texthighlight {
+            color: var(--colorcyan);
+            font-weight: 600;
+        }
+
+        .hobbygrid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+
+        .hobbytag {
+            padding: 0.4rem 1.1rem;
+            background: rgba(162, 0, 255, 0.06);
+            border: 1px solid rgba(162, 0, 255, 0.2);
+            border-radius: 20px;
+            font-family: var(--fontcode);
+            font-size: 0.85rem;
+            color: #d8b4f8;
+        }
+
+        /* ==========================================================================
+           6. SKILLS MATRIX
+           ========================================================================== */
+        .skillsgrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .skillscolumntitle {
+            font-size: 1.3rem;
+            color: var(--colorpink);
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 0.5rem;
+        }
+
+        .skillitem {
+            margin-bottom: 1.8rem;
+        }
+
+        .skillmeta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-family: var(--fontcode);
+            font-size: 0.9rem;
+        }
+
+        .skillname { color: #fff; }
+        .skillstatus { color: var(--colorcyan); }
+
+        .progresstrack {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progressfill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--colorpurple), var(--colorcyan));
+            border-radius: 3px;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple), var(--neon-pink));
-            opacity: 0.7;
+            width: 0%; 
+            box-shadow: 0 0 10px var(--colorcyanglow);
+            transition: width 1.5s ease-out;
         }
 
-        .glass-panel:hover {
-            border-color: rgba(0, 240, 255, 0.3);
-            box-shadow: 0 25px 60px rgba(0, 240, 255, 0.15);
-            transform: translateY(-4px);
+        .softwaregrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
 
-        /* ==========================================================================
-           SLIDE 1: INITIALIZE MATRIX (INTRO)
-           ========================================================================== */
-        .sys-terminal-tag {
-            font-family: var(--font-code);
-            color: var(--neon-cyan);
-            font-size: 1rem;
-            display: block;
-            margin-bottom: 0.75rem;
-            font-weight: 700;
+        .softwarecard {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
         }
 
-        .master-title {
-            font-size: 4.5rem;
-            font-weight: 900;
-            line-height: 1.05;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(45deg, #ffffff, #d1d9e6, var(--neon-cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dynamic-sub-terminal {
-            font-size: 2rem;
-            color: var(--neon-pink);
-            margin-bottom: 2rem;
-            font-weight: 500;
-            min-height: 3.2rem;
-        }
-
-        .typing-cursor-node {
-            display: inline-block;
-            width: 3px;
-            height: 1.1em;
-            background-color: var(--neon-pink);
-            vertical-align: middle;
-            margin-left: 5px;
-            animation: blinker 1s step-end infinite;
-        }
-
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
-
-        .interest-cluster {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 2rem;
-        }
-
-        .interest-node {
-            padding: 0.5rem 1.2rem;
-            background: rgba(162, 0, 255, 0.08);
-            border: 1px solid rgba(162, 0, 255, 0.25);
-            border-radius: 30px;
-            font-family: var(--font-code);
-            font-size: 0.85rem;
-            color: #d7b3ff;
-            transition: var(--transition-fast);
-        }
-
-        .interest-node:hover {
-            background: rgba(0, 240, 255, 0.1);
-            border-color: var(--neon-cyan);
-            color: var(--neon-cyan);
-            box-shadow: 0 0 15px var(--neon-cyan-glow);
-            transform: scale(1.05);
-        }
-
-        /* Abstract Hologram Visuals */
-        .holo-emitter {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 400px;
-        }
-
-        .vector-ring-outer {
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            border: 2px dashed var(--neon-cyan);
-            animation: rotateForward 30s linear infinite;
-            position: absolute;
-        }
-
-        .vector-ring-inner {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            border: 2px solid var(--neon-purple);
-            border-left-color: transparent;
-            border-right-color: transparent;
-            animation: rotateReverse 20s linear infinite;
-            position: absolute;
-        }
-
-        .vector-core-identity {
-            position: absolute;
-            font-family: var(--font-display);
-            font-size: 4.5rem;
-            font-weight: 900;
+        .softwarecard h4 {
+            font-size: 1.1rem;
             color: #fff;
-            text-shadow: 0 0 25px var(--neon-cyan-glow);
-            animation: pulseCore 4s infinite alternate ease-in-out;
+            margin-bottom: 0.2rem;
         }
 
-        @keyframes rotateForward { 100% { transform: rotate(360deg); } }
-        @keyframes rotateReverse { 100% { transform: rotate(-360deg); } }
-        @keyframes pulseCore {
-            0% { transform: scale(0.95); opacity: 0.8; text-shadow: 0 0 15px var(--neon-cyan-glow); }
-            100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 35px var(--neon-pink-glow); }
+        .softwarecard span {
+            font-family: var(--fontcode);
+            font-size: 0.8rem;
+            color: var(--colorpink);
         }
 
         /* ==========================================================================
-           SLIDE 2: ACADEMIC MATRIX (QUALIFICATIONS)
+           7. ACADEMIC & PROFESSIONAL HISTORY
            ========================================================================== */
-        .slide-heading-container {
+        .historygrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .historycolumntitle {
+            font-size: 1.5rem;
+            text-align: center;
             margin-bottom: 2.5rem;
-            position: relative;
-        }
-
-        .slide-heading-main {
-            font-size: 2.5rem;
             color: #fff;
+        }
+
+        .timelinecontainer {
             position: relative;
-            display: inline-block;
+            padding-left: 1.5rem;
         }
 
-        .slide-heading-main::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 70px;
-            height: 3px;
-            background: var(--neon-cyan);
-            box-shadow: 0 0 8px var(--neon-cyan);
-        }
-
-        .timeline-matrix-vertical {
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .timeline-matrix-vertical::before {
+        .timelinecontainer::before {
             content: '';
             position: absolute;
             left: 0;
             top: 0;
             width: 2px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple), transparent);
+            background: linear-gradient(to bottom, var(--colorcyan), var(--colorpurple), transparent);
         }
 
-        .timeline-node-wrapper {
+        .timelinecard {
             position: relative;
             margin-bottom: 2rem;
         }
 
-        .timeline-node-wrapper::before {
+        .timelinecard::before {
             content: '';
             position: absolute;
-            left: calc(-2.0rem - 6px);
+            left: calc(-1.5rem - 5px);
             top: 6px;
-            width: 14px;
-            height: 14px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            background: var(--bg-deep);
-            border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 8px var(--neon-cyan);
-            z-index: 5;
-            transition: var(--transition-fast);
+            background: var(--bgbase);
+            border: 2px solid var(--colorcyan);
+            box-shadow: 0 0 6px var(--colorcyan);
+            z-index: 2;
         }
 
-        .timeline-node-wrapper:hover::before {
-            background: var(--neon-pink);
-            border-color: var(--neon-pink);
-            box-shadow: 0 0 12px var(--neon-pink);
-            transform: scale(1.25);
-        }
-
-        .timeline-stamp {
-            font-family: var(--font-code);
-            color: var(--neon-pink);
-            font-size: 0.9rem;
+        .timelinedate {
+            font-family: var(--fontcode);
+            color: var(--colorpink);
+            font-size: 0.85rem;
             font-weight: bold;
-            margin-bottom: 0.25rem;
             display: block;
+            margin-bottom: 0.3rem;
         }
 
-        .timeline-node-title {
-            font-size: 1.4rem;
+        .timelinetitle {
+            font-size: 1.25rem;
             color: #fff;
             font-weight: 700;
         }
 
-        .timeline-node-institution {
-            font-size: 1.05rem;
-            color: var(--neon-cyan);
-            margin-bottom: 0.75rem;
-            font-weight: 500;
-        }
-
-        .metric-badge-container {
-            display: inline-block;
-            padding: 0.3rem 0.9rem;
-            background: rgba(255, 0, 122, 0.08);
-            border: 1px solid var(--neon-pink);
-            border-radius: 4px;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            color: #fff;
-            margin-top: 0.25rem;
-            box-shadow: 0 0 10px rgba(255,0,122,0.15);
-        }
-
-        .academic-focus-panel h3 {
-            font-size: 1.6rem;
-            color: var(--neon-purple);
-            margin-bottom: 1.25rem;
-        }
-
-        .academic-focus-panel p {
-            font-size: 1.05rem;
-            margin-bottom: 1.25rem;
-        }
-
-        /* ==========================================================================
-           SLIDE 3: SYSTEM ARSENAL (SKILLS)
-           ========================================================================== */
-        .skills-matrix-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-        }
-
-        .skill-sub-sector-title {
-            font-size: 1.4rem;
-            color: var(--neon-pink);
-            margin-bottom: 1.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .skill-node-block {
-            margin-bottom: 1.5rem;
-        }
-
-        .skill-meta-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        .skill-meta-label .track-name {
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .skill-meta-label .track-tier {
-            color: var(--neon-cyan);
-        }
-
-        .bar-frame-bg {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-
-        .bar-injector-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
-            border-radius: 4px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%; /* Operationalized via JavaScript transition engine */
-            box-shadow: 0 0 12px var(--neon-cyan-glow);
-            transition: width 1.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .software-cluster-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.25rem;
-            margin-top: 1rem;
-        }
-
-        .software-card-node {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            padding: 1.25rem;
-            text-align: center;
-            transition: var(--transition-smooth);
-        }
-
-        .software-card-node:hover {
-            background: rgba(162, 0, 255, 0.05);
-            border-color: rgba(162, 0, 255, 0.3);
-            transform: scale(1.03);
-        }
-
-        .software-card-node h4 {
-            font-size: 1.1rem;
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
-
-        .software-card-node span {
-            font-family: var(--font-code);
-            font-size: 0.8rem;
-            color: var(--neon-pink);
-        }
-
-        /* ==========================================================================
-           SLIDE 4: REAL-TIME OPERATION LOGS (EXPERIENCE)
-           ========================================================================== */
-        .operational-grid-layout {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 3.5rem;
-            align-items: center;
-        }
-
-        .experience-header-block {
-            margin-bottom: 1.5rem;
-        }
-
-        .company-meta-callout {
-            font-family: var(--font-display);
-            font-size: 2.2rem;
-            color: #fff;
-            margin-bottom: 0.25rem;
-        }
-
-        .company-meta-callout span {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 10px var(--neon-cyan-glow);
-        }
-
-        .operation-location-tag {
-            font-family: var(--font-code);
+        .timelinesubtitle {
             font-size: 1rem;
-            color: var(--neon-pink);
-            display: block;
-            margin-bottom: 1.5rem;
-            letter-spacing: 1px;
+            color: var(--colorcyan);
+            margin-bottom: 0.7rem;
+            font-weight: 500;
         }
 
-        .functional-log-details p {
-            font-size: 1.15rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
+        .timelinedesc {
+            font-size: 0.95rem;
         }
 
-        .highlight-accent-glow {
+        .gradepill {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.2rem 0.7rem;
+            background: rgba(255, 0, 122, 0.08);
+            border: 1px solid var(--colorpink);
+            border-radius: 4px;
+            font-family: var(--fontcode);
+            font-size: 0.85rem;
             color: #fff;
-            font-weight: 600;
-            box-shadow: inset 0 -2px 0 var(--neon-cyan);
-            padding-bottom: 2px;
-        }
-
-        .telemetry-status-panel {
-            border-left: 3px solid var(--neon-purple);
-            padding-left: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .telemetry-status-panel span {
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 0.25rem;
-        }
-
-        .telemetry-status-panel p {
-            font-size: 1.1rem;
-            color: #fff;
-            font-style: italic;
-        }
-
-        /* Geometric Visualization Module */
-        .matrix-datacube-wrapper {
-            position: relative;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .datacube-wireframe {
-            width: 180px;
-            height: 180px;
-            border: 2px solid var(--neon-purple);
-            position: absolute;
-            transform: rotateX(45deg) rotateZ(45deg);
-            animation: cubeSpit 12s infinite linear;
-            box-shadow: 0 0 20px var(--neon-purple-glow), inset 0 0 20px var(--neon-purple-glow);
-        }
-
-        .datacube-wireframe-secondary {
-            width: 120px;
-            height: 120px;
-            border: 2px dashed var(--neon-cyan);
-            position: absolute;
-            transform: rotateX(45deg) rotateZ(45deg);
-            animation: cubeSpitInverse 8s infinite linear;
-            box-shadow: 0 0 15px var(--neon-cyan-glow);
-        }
-
-        @annotation { "cubeSpit keyframes context" }
-        @keyframes cubeSpit {
-            0% { transform: rotateX(60deg) rotateZ(0deg); }
-            100% { transform: rotateX(60deg) rotateZ(360deg); }
-        }
-        @keyframes cubeSpitInverse {
-            0% { transform: rotateX(60deg) rotateZ(360deg); }
-            100% { transform: rotateX(60deg) rotateZ(0deg); }
         }
 
         /* ==========================================================================
-           SLIDE 5: SECURE COMM LINK (CONTACT)
+           8. CONTACT US
            ========================================================================== */
-        .comms-grid-structural {
+        .contactlayout {
             display: grid;
             grid-template-columns: 0.9fr 1.1fr;
-            gap: 3.5rem;
+            gap: 4rem;
         }
 
-        .comms-directory-wrapper {
+        .contactmethods {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
         }
 
-        .comms-anchor-node {
+        .contactlinkcard {
             display: flex;
             align-items: center;
             gap: 1.5rem;
@@ -785,631 +600,603 @@
             border: 1px solid rgba(255, 255, 255, 0.04);
             padding: 1.5rem;
             border-radius: 12px;
-            transition: var(--transition-smooth);
+            transition: var(--transitionsmooth);
         }
 
-        .comms-anchor-node:hover {
-            background: rgba(0, 240, 255, 0.04);
-            border-color: rgba(0, 240, 255, 0.3);
-            transform: translateX(8px);
-            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.1);
+        .contactlinkcard:hover {
+            background: rgba(0, 240, 255, 0.03);
+            border-color: rgba(0, 240, 255, 0.25);
+            transform: translateX(6px);
         }
 
-        .comms-icon-module {
-            width: 54px;
-            height: 54px;
+        .contacticonframe {
+            width: 50px;
+            height: 50px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--neon-cyan);
-            font-size: 1.3rem;
-            transition: var(--transition-smooth);
+            color: var(--colorcyan);
+            font-size: 1.2rem;
+            transition: var(--transitionsmooth);
         }
 
-        .comms-anchor-node:hover .comms-icon-module {
-            background: var(--neon-cyan);
-            color: var(--bg-deep);
-            box-shadow: 0 0 15px var(--neon-cyan);
+        .contactlinkcard:hover .contacticonframe {
+            background: var(--colorcyan);
+            color: #03030a;
+            box-shadow: 0 0 12px var(--colorcyan);
         }
 
-        .comms-meta-details span {
-            font-family: var(--font-code);
+        .contactmeta span {
+            font-family: var(--fontcode);
             font-size: 0.8rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
+            color: var(--textmuted);
             display: block;
-            margin-bottom: 0.15rem;
+            margin-bottom: 0.1rem;
         }
 
-        .comms-meta-details p {
-            font-family: var(--font-code);
-            font-size: 1.15rem;
+        .contactmeta p {
+            font-family: var(--fontcode);
+            font-size: 1.1rem;
             color: #fff;
             font-weight: bold;
         }
 
-        /* Interface Input Controls */
-        .secure-transmission-form {
+        /* Form styling */
+        .contactform {
             display: flex;
             flex-direction: column;
             gap: 1.25rem;
         }
 
-        .form-input-container {
+        .formgroup {
             position: relative;
         }
 
-        .form-input-field {
+        .formcontrol {
             width: 100%;
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 1.1rem;
             color: #fff;
-            font-family: var(--font-body);
+            font-family: var(--fontbody);
             font-size: 1rem;
             border-radius: 8px;
-            transition: var(--transition-smooth);
+            outline: none;
+            transition: var(--transitionsmooth);
+            cursor: auto;
         }
 
-        .form-input-field:focus {
-            border-color: var(--neon-purple);
-            background: rgba(162, 0, 255, 0.04);
-            box-shadow: 0 0 15px rgba(162, 0, 255, 0.2);
+        .formcontrol:focus {
+            border-color: var(--colorpurple);
+            background: rgba(162, 0, 255, 0.03);
+            box-shadow: 0 0 15px rgba(162, 0, 255, 0.15);
         }
 
-        textarea.form-input-field {
-            height: 120px;
+        textarea.formcontrol {
+            height: 130px;
             resize: none;
         }
 
-        .form-input-label {
+        .formlabel {
             position: absolute;
             left: 1.1rem;
             top: 1.1rem;
-            color: var(--text-secondary);
-            font-family: var(--font-code);
+            color: var(--textmuted);
+            font-family: var(--fontcode);
             font-size: 0.85rem;
             pointer-events: none;
-            transition: var(--transition-smooth);
+            transition: var(--transitionsmooth);
         }
 
-        .form-input-field:focus ~ .form-input-label,
-        .form-input-field:valid ~ .form-input-label {
+        .formcontrol:focus ~ .formlabel,
+        .formcontrol:valid ~ .formlabel {
             top: -0.6rem;
             left: 0.9rem;
             font-size: 0.75rem;
-            color: var(--neon-purple);
-            background: #080818;
+            color: var(--colorpurple);
+            background: #04040c;
             padding: 0 0.4rem;
         }
 
-        .packet-submit-button {
+        .formsubmitbtn {
             background: transparent;
-            border: 1px solid var(--neon-pink);
-            color: var(--neon-pink);
+            border: 1px solid var(--colorpink);
+            color: var(--colorpink);
             padding: 1.1rem;
-            font-family: var(--font-display);
+            font-family: var(--fontheading);
             font-size: 1rem;
             font-weight: 700;
             letter-spacing: 2px;
             border-radius: 8px;
-            transition: var(--transition-smooth);
+            transition: var(--transitionsmooth);
+            cursor: none;
         }
 
-        .packet-submit-button:hover {
-            background: var(--neon-pink);
+        .formsubmitbtn:hover {
+            background: var(--colorpink);
             color: #fff;
-            box-shadow: 0 0 25px var(--neon-pink-glow);
+            box-shadow: 0 0 20px var(--colorpinkglow);
         }
 
         /* ==========================================================================
-           6. INTERFACE FOOTER METRICS
+           9. FOOTER
            ========================================================================== */
         footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.25rem 0;
-            z-index: 1000;
-            border-top: 1px solid rgba(255, 255, 255, 0.02);
-            background: rgba(3, 3, 12, 0.5);
-            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(3, 3, 10, 0.6);
         }
 
-        .footer-container {
-            width: 90%;
-            max-width: 1400px;
-            margin: 0 auto;
+        .footerwrap {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-family: var(--font-code);
-            font-size: 0.8rem;
-            color: var(--text-secondary);
+            font-family: var(--fontcode);
+            font-size: 0.85rem;
+            color: var(--textmuted);
         }
 
-        .footer-container span {
-            color: var(--neon-cyan);
+        .footerwrap span { color: var(--colorcyan); }
+
+        /* ==========================================================================
+           10. SCROLL REVEAL CONFIGURATION
+           ========================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ==========================================================================
-           7. RESPONSIVE MATRIX OVERRIDES
+           11. MOBILE & TABLET RESPONSIVE ENGINE
            ========================================================================== */
         @media (max-width: 1024px) {
-            html, body { overflow-y: auto; height: auto; cursor: auto; }
-            #cursor-pointer, #cursor-halo { display: none; }
-            .slide-deck { position: relative; opacity: 1; pointer-events: auto; transform: none; min-height: 100vh; padding: 100px 0; display: block; }
-            .slide-layout-grid, .skills-matrix-layout, .operational-grid-layout, .comms-grid-structural { grid-template-columns: 1fr; gap: 2.5rem; }
-            .lateral-nav { display: none; }
-            .holo-emitter { height: 200px; margin-top: 2rem; }
-            .vector-ring-outer { width: 200px; height: 200px; }
-            .vector-ring-inner { width: 160px; height: 160px; }
-            .vector-core-identity { font-size: 3rem; }
-            nav { position: absolute; }
-            footer { position: relative; margin-top: 4rem; }
+            #cursordot, #cursorcircle { display: none !important; }
+            body { cursor: auto !important; }
+            a, button, input, textarea, .formsubmitbtn { cursor: pointer !important; }
+
+            .herogrid, .aboutlayout, .skillsgrid, .historygrid, .contactlayout {
+                grid-template-columns: 1fr !important;
+                gap: 2.5rem;
+            }
+
+            section { padding: 5rem 0; }
+            .herotitle { font-size: 3rem; }
+            .herosubtitle { font-size: 1.5rem; }
+            
+            .hologramframe { height: 250px; margin-top: 2rem; }
+            .ringouter { width: 220px; height: 220px; }
+            .ringinner { width: 180px; height: 180px; }
+            .coretext { font-size: 3rem; }
+
+            .navlinks { display: none; } 
+            .footerwrap { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor-pointer"></div>
-    <div id="cursor-halo"></div>
+    <div id="cursordot"></div>
+    <div id="cursorcircle"></div>
 
-    <canvas id="particle-matrix"></canvas>
-    <div class="blur-orb orb-alpha"></div>
-    <div class="blur-orb orb-beta"></div>
-    <div class="blur-orb orb-gamma"></div>
+    <canvas id="particlecanvas"></canvas>
+    <div class="bgglow glow1"></div>
+    <div class="bgglow glow2"></div>
 
-    <nav>
-        <div class="nav-container">
-            <a href="#" class="logo-terminal" onclick="switchSlideDeck(0); return false;">MB<span>.</span>CORE</a>
-            <div class="nav-indicators">
-                <button class="nav-tab active-tab" onclick="switchSlideDeck(0)">01. Initialize</button>
-                <button class="nav-tab" onclick="switchSlideDeck(1)">02. Academic_Matrix</button>
-                <button class="nav-tab" onclick="switchSlideDeck(2)">03. Arsenal</button>
-                <button class="nav-tab" onclick="switchSlideDeck(3)">04. Log_Operations</button>
-                <button class="nav-tab" onclick="switchSlideDeck(4)">05. Comm_Link</button>
-            </div>
+    <nav id="navbar">
+        <div class="container navcontainer">
+            <a href="#hero" class="logo">MAYANK<span>.</span>CORE</a>
+            <ul class="navlinks">
+                <li><a href="#about" class="navlink">01. Overview</a></li>
+                <li><a href="#skills" class="navlink">02. Skills</a></li>
+                <li><a href="#history" class="navlink">03. History</a></li>
+                <li><a href="#contact" class="navlink">04. Contact Us</a></li>
+            </ul>
         </div>
     </nav>
 
-    <div class="lateral-nav">
-        <div class="bullet active-bullet" onclick="switchSlideDeck(0)"></div>
-        <div class="bullet" onclick="switchSlideDeck(1)"></div>
-        <div class="bullet" onclick="switchSlideDeck(2)"></div>
-        <div class="bullet" onclick="switchSlideDeck(3)"></div>
-        <div class="bullet" onclick="switchSlideDeck(4)"></div>
-    </div>
+    <main class="container">
 
-    <div class="workspace-viewport">
-
-        <div class="slide-deck active-slide">
-            <div class="slide-wrapper">
-                <div class="slide-layout-grid">
-                    <div class="intro-profile-text">
-                        <span class="sys-terminal-tag">> PIPELINE_STATUS: SECURE</span>
-                        <h1 class="master-title">MAYANK BISHT</h1>
-                        <div class="dynamic-sub-terminal">
-                            > <span id="text-injector-node"></span><span class="typing-cursor-node"></span>
-                        </div>
-                        <p>
-                            A 17-year-old developer and digital marketer operating from Surat. Driven by a fundamental passion for testing raw concepts, decoding complex behavioral patterns, and building optimized visual content. Curating cross-functional experiences.
-                        </p>
-                        <div class="interest-cluster">
-                            <span class="interest-node">#Psychology Exploration</span>
-                            <span class="interest-node">#Scientific Literature</span>
-                            <span class="interest-node">#Manga Narrative Analysis</span>
-                            <span class="interest-node">#Conceptual Research</span>
-                        </div>
+        <section id="hero">
+            <div class="herogrid">
+                <div class="herocontent reveal">
+                    <span class="herotag">> Identity Pipeline Verified</span>
+                    <h1 class="herotitle">MAYANK BISHT</h1>
+                    <h2 class="herosubtitle">
+                        > Specialized in <span id="typedtext"></span><span class="cursorblink"></span>
+                    </h2>
+                    <p style="max-width: 550px; margin-bottom: 2rem;">
+                        A 17-year-old digital creator, operational coordinator, and prospective management candidate based in Surat. Combining corporate execution parameters with a deep interest in strategic analysis.
+                    </p>
+                    <div class="btngroup">
+                        <a href="#history" class="btn btnprimary">View History Logs</a>
+                        <a href="#contact" class="btn btnsecondary">Contact Us</a>
                     </div>
-                    <div class="holo-emitter">
-                        <div class="vector-ring-outer"></div>
-                        <div class="vector-ring-inner"></div>
-                        <div class="vector-core-identity">MB</div>
+                </div>
+                <div class="hologramframe reveal">
+                    <div class="ringouter"></div>
+                    <div class="ringinner"></div>
+                    <div class="coretext">MB</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="sectiontitlewrapper reveal">
+                <h2 class="sectiontitle">Core Overview</h2>
+            </div>
+            <div class="aboutlayout">
+                <div class="glasspanel reveal" style="display: flex; justify-content: center; align-items: center; min-height: 250px; background: linear-gradient(135deg, rgba(0,240,255,0.03), rgba(162,0,255,0.03)); border: 1px solid var(--borderglass);">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="var(--colorcyan)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <div class="abouttext reveal">
+                    <h3 style="font-family: var(--fontheading); color: var(--colorpurple); font-size: 1.8rem; margin-bottom: 1rem;">Testing Parameters</h3>
+                    <p>
+                        I focus heavily on <span class="texthighlight">trying new things</span>, rejecting static routines to continually gather knowledge across analytical fields.
+                    </p>
+                    <p>
+                        My intellectual foundation is built around reading <span class="texthighlight">Manga Narrative Formats</span>, examining modern <span class="texthighlight">Scientific Realities</span>, and studying human performance patterns through <span class="texthighlight">Psychology</span>. This perspective directly informs how I manage operational details and marketing targets.
+                    </p>
+                    <div class="hobbygrid">
+                        <span class="hobbytag">Psychology Analysis</span>
+                        <span class="hobbytag">Scientific Literature</span>
+                        <span class="hobbytag">Manga Concepts</span>
+                        <span class="hobbytag">Strategic Adaptation</span>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="slide-deck">
-            <div class="slide-wrapper">
-                <div class="slide-layout-grid">
-                    <div class="timeline-matrix-vertical">
-                        
-                        <div class="timeline-node-wrapper">
-                            <span class="timeline-stamp">Target Objective</span>
-                            <h3 class="timeline-node-title">Bachelor of Business Administration</h3>
-                            <h4 class="timeline-node-institution">V. B. Shah Institute of Management, Amroli</h4>
-                            <p style="font-size: 0.95rem;">Actively processing academic admission workflows to specialize in organizational development, data orchestration, and corporate administrative scaling metrics.</p>
-                        </div>
-
-                        <div class="timeline-node-wrapper">
-                            <span class="timeline-stamp">Higher Secondary Education</span>
-                            <h3 class="timeline-node-title">Standard 12th Matrix Completion</h3>
-                            <h4 class="timeline-node-institution">Gujarat Secondary and Higher Secondary Education Board</h4>
-                            <div class="metric-badge-container">Performance Profile: 77%</div>
-                        </div>
-
-                        <div class="timeline-node-wrapper">
-                            <span class="timeline-stamp">Secondary Education Metrics</span>
-                            <h3 class="timeline-node-title">Standard 10th Foundation Calibration</h3>
-                            <h4 class="timeline-node-institution">GSEB Academic Pipeline</h4>
-                            <div class="metric-badge-container">Performance Profile: 66%</div>
-                        </div>
-
-                    </div>
+        <section id="skills">
+            <div class="sectiontitlewrapper reveal">
+                <h2 class="sectiontitle">Skills Matrix</h2>
+            </div>
+            <div class="skillsgrid">
+                
+                <div class="glasspanel reveal">
+                    <h3 class="skillscolumntitle">Management & Systems</h3>
                     
-                    <div class="glass-panel academic-focus-panel">
-                        <h3>Institutional Objective</h3>
-                        <p>
-                            Targeting integration into <span style="color:var(--neon-cyan); font-weight:600;">Vanita Vishram Women's College managed V. B. Shah Institute of Management</span> to build operational strategies on top of modern analytical frameworks.
-                        </p>
-                        <p>
-                            The core curriculum coordinates management logistics, commercial infrastructure paradigms, and computational workflow metrics—aligning with my present operational trajectory.
-                        </p>
+                    <div class="skillitem">
+                        <div class="skillmeta">
+                            <span class="skillname">Digital Growth Marketing</span>
+                            <span class="skillstatus">Velosis Trained</span>
+                        </div>
+                        <div class="progresstrack">
+                            <div class="progressfill" data-width="85%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skillitem">
+                        <div class="skillmeta">
+                            <span class="skillname">Data Input Logistics</span>
+                            <span class="skillstatus">Active Competence</span>
+                        </div>
+                        <div class="progresstrack">
+                            <div class="progressfill" data-width="90%"></div>
+                        </div>
+                    </div>
+
+                    <div class="skillitem">
+                        <div class="skillmeta">
+                            <span class="skillname">Course on Computer Concepts (CCC)</span>
+                            <span class="skillstatus">Certified | Velosis</span>
+                        </div>
+                        <div class="progresstrack">
+                            <div class="progressfill" data-width="100%"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="slide-deck">
-            <div class="slide-wrapper">
-                <div class="skills-matrix-layout">
+                <div class="glasspanel reveal">
+                    <h3 class="skillscolumntitle">Visual Assets & Synthesis</h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem; color: var(--textmuted);">
+                        Intermediate configuration capabilities across timeline-oriented content creation engines, post-production deployment models, and vector asset balancing.
+                    </p>
+                    <div class="softwaregrid">
+                        <div class="softwarecard">
+                            <h4>Alight Motion</h4>
+                            <span>Motion Editing</span>
+                        </div>
+                        <div class="softwarecard">
+                            <h4>CapCut</h4>
+                            <span>Timeline Assembly</span>
+                        </div>
+                        <div class="softwarecard">
+                            <h4>Graphic Design</h4>
+                            <span>Layout Assembly</span>
+                        </div>
+                        <div class="softwarecard">
+                            <h4>Data Layouts</h4>
+                            <span>Structural Logic</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="history">
+            <div class="sectiontitlewrapper reveal">
+                <h2 class="sectiontitle">History Logs</h2>
+            </div>
+            <div class="historygrid">
+                
+                <div class="glasspanel reveal">
+                    <h3 class="historycolumntitle">Work Records</h3>
+                    <div class="timelinecontainer">
+                        <div class="timelinecard">
+                            <span class="timelinedate">Active Employment Log</span>
+                            <h4 class="timelinetitle">Data Entry Specialist</h4>
+                            <h5 class="timelinesubtitle">Dev Diam | Mahidarpura, Diamond Hub</h5>
+                            <p class="timelinedesc">
+                                Actively processing accurate records and maintaining core databases. Gaining foundational, real-time work experience in corporate logistics prior to starting formal business management education.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glasspanel reveal">
+                    <h3 class="historycolumntitle">Academic Pipeline</h3>
+                    <div class="timelinecontainer">
+                        
+                        <div class="timelinecard">
+                            <span class="timelinedate">Targeting Next Phase</span>
+                            <h4 class="timelinetitle">Bachelor of Business Administration</h4>
+                            <h5 class="timelinesubtitle">V. B. Shah Institute of Management, Amroli</h5>
+                            <p class="timelinedesc">Securing admissions workflow to master modern commercial strategy, corporate financial analytics, and workplace orchestration tracks.</p>
+                        </div>
+
+                        <div class="timelinecard">
+                            <span class="timelinedate">Higher Secondary Completion</span>
+                            <h4 class="timelinetitle">Standard 12th Examination</h4>
+                            <h5 class="timelinesubtitle">GSEB Education Matrix</h5>
+                            <span class="gradepill">Performance Profile: 77%</span>
+                        </div>
+
+                        <div class="timelinecard">
+                            <span class="timelinedate">Secondary Completion</span>
+                            <h4 class="timelinetitle">Standard 10th Examination</h4>
+                            <h5 class="timelinesubtitle">GSEB Education Matrix</h5>
+                            <span class="gradepill">Performance Profile: 66%</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="sectiontitlewrapper reveal">
+                <h2 class="sectiontitle">Contact Us</h2>
+            </div>
+            <div class="glasspanel contactlayout reveal">
+                
+                <div class="contactmethods">
+                    <p style="font-size: 1rem; color: var(--textmuted); margin-bottom: 0.5rem;">
+                        Establish an encrypted connection or direct communication channel:
+                    </p>
                     
-                    <div class="glass-panel">
-                        <h3 class="skill-sub-sector-title">
-                            Digital Marketing & Admin
-                        </h3>
-                        
-                        <div class="skill-node-block">
-                            <div class="skill-meta-label">
-                                <span class="track-name">Digital Growth Marketing</span>
-                                <span class="track-tier">Velosis Calibrated</span>
-                            </div>
-                            <div class="bar-frame-bg">
-                                <div class="bar-injector-fill" data-target-width="85%"></div>
-                            </div>
+                    <a href="tel:7990976504" class="contactlinkcard">
+                        <div class="contacticonframe">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
                         </div>
-
-                        <div class="skill-node-block">
-                            <div class="skill-meta-label">
-                                <span class="track-name">Data Management & Logistics</span>
-                                <span class="track-tier">Operational Baseline</span>
-                            </div>
-                            <div class="bar-frame-bg">
-                                <div class="bar-injector-fill" data-target-width="90%"></div>
-                            </div>
+                        <div class="contactmeta">
+                            <span>Voice Routing Connection</span>
+                            <p>+91 7990976504</p>
                         </div>
+                    </a>
 
-                        <div class="skill-node-block">
-                            <div class="skill-meta-label">
-                                <span class="track-name">Course on Computer Concepts (CCC)</span>
-                                <span class="track-tier">Certified | Velosis</span>
-                            </div>
-                            <div class="bar-frame-bg">
-                                <div class="bar-injector-fill" data-target-width="100%"></div>
-                            </div>
+                    <a href="mailto:mayankbisht2224@gmail.com" class="contactlinkcard">
+                        <div class="contacticonframe">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                         </div>
-                    </div>
-
-                    <div class="glass-panel">
-                        <h3 class="skill-sub-sector-title">
-                            Visual Post-Production & Assets
-                        </h3>
-                        <p style="font-size: 1rem; margin-bottom: 1.5rem;">
-                            Intermediate structural command over timeline-based video manipulation mechanics, spatial framing assets, keyframe motion dynamics, and graphic compilation pipelines.
-                        </p>
-                        
-                        <div class="software-cluster-grid">
-                            <div class="software-card-node">
-                                <h4>Alight Motion</h4>
-                                <span>Motion Design</span>
-                            </div>
-                            <div class="software-card-node">
-                                <h4>CapCut Pro</h4>
-                                <span>Timeline Editing</span>
-                            </div>
-                            <div class="software-card-node">
-                                <h4>Graphic Design</h4>
-                                <span>Asset Synthesis</span>
-                            </div>
-                            <div class="software-card-node">
-                                <h4>UI Composition</h4>
-                                <span>Interface Logic</span>
-                            </div>
+                        <div class="contactmeta">
+                            <span>Direct Email Node</span>
+                            <p>mayankbisht2224@gmail.com</p>
                         </div>
-                    </div>
-
+                    </a>
                 </div>
+
+                <form class="contactform" onsubmit="event.preventDefault(); alert('Message transmitted successfully.');">
+                    <div class="formgroup">
+                        <input type="text" class="formcontrol" required id="username">
+                        <label class="formlabel" for="username">Your Full Name</label>
+                    </div>
+                    <div class="formgroup">
+                        <input type="email" class="formcontrol" required id="useremail">
+                        <label class="formlabel" for="useremail">Your Email Address</label>
+                    </div>
+                    <div class="formgroup">
+                        <textarea class="formcontrol" required id="usermsg"></textarea>
+                        <label class="formlabel" for="usermsg">Your Message Payload</label>
+                    </div>
+                    <button type="submit" class="formsubmitbtn">SEND MESSAGE</button>
+                </form>
+
             </div>
-        </div>
+        </section>
 
-        <div class="slide-deck">
-            <div class="slide-wrapper">
-                <div class="glass-panel operational-grid-layout">
-                    <div class="functional-log-details">
-                        <div class="experience-header-block">
-                            <span class="sys-terminal-tag">> ACTIVE_CONCURRENT_DEPLOYMENT</span>
-                            <h2 class="company-meta-callout">DEV DIAM</h2>
-                            <span class="operation-location-tag">Mahidarpura, Diamond Hub Sector</span>
-                        </div>
-                        <p>
-                            Engaged as an active <span class="highlight-accent-glow">Data Entry Operator</span>, maintaining database integrity, structural logging operations, and information taxonomy validation rules inside Surat's high-velocity diamond district.
-                        </p>
-                        <p>
-                            This deliberate assignment serves to lock down <span class="highlight-accent-glow">concrete corporate workflows and industry operations</span> prior to theoretical business management analysis at the university scale.
-                        </p>
-                        <div class="telemetry-status-panel">
-                            <span>Operational Telemetry Value</span>
-                            <p>"Acquiring structural workspace performance logs and tactical data experience before initializing BBA track protocols."</p>
-                        </div>
-                    </div>
-                    <div class="matrix-datacube-wrapper">
-                        <div class="datacube-wireframe"></div>
-                        <div class="datacube-wireframe-secondary"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide-deck">
-            <div class="slide-wrapper">
-                <div class="comms-grid-structural">
-                    
-                    <div class="comms-directory-wrapper">
-                        <div class="slide-heading-container">
-                            <h2 class="slide-heading-main" data-text="SECURE_COMMS">Secure_Comms</h2>
-                        </div>
-                        <p style="margin-bottom: 1rem; font-size: 1rem;">Initialize an automated handshake protocol across verified routing frequencies:</p>
-                        
-                        <a href="tel:7990976504" class="comms-anchor-node">
-                            <div class="comms-icon-module">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                            </div>
-                            <div class="comms-meta-details">
-                                <span>Voice Telemetry Channel</span>
-                                <p>+91 7990976504</p>
-                            </div>
-                        </a>
-
-                        <a href="mailto:mayankbisht2224@gmail.com" class="comms-anchor-node">
-                            <div class="comms-icon-module">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                            </div>
-                            <div class="comms-meta-details">
-                                <span>Encrypted Message Relay</span>
-                                <p>mayankbisht2224@gmail.com</p>
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="glass-panel">
-                        <form class="secure-transmission-form" onsubmit="event.preventDefault(); alert('Packet transmitted securely over current link parameters.');">
-                            <div class="form-input-container">
-                                <input type="text" class="form-input-field" required id="form-alias">
-                                <label class="form-input-label" for="form-alias">Identity Alias</label>
-                            </div>
-                            <div class="form-input-container">
-                                <input type="email" class="form-input-field" required id="form-frequency">
-                                <label class="form-input-label" for="form-frequency">Return Routing (Email)</label>
-                            </div>
-                            <div class="form-input-container">
-                                <textarea class="form-input-field" required id="form-payload"></textarea>
-                                <label class="form-input-label" for="form-payload">Information Payload</label>
-                            </div>
-                            <button type="submit" class="packet-submit-button">TRANSMIT PACKET</button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
+    </main>
 
     <footer>
-        <div class="footer-container">
-            <div>CORE STATUS: <span>ONLINE</span></div>
-            <div>COORDINATES: SURAT, IN</div>
-            <div>TEMPORAL INDEX: &copy; 2026 MB.SYS</div>
+        <div class="container footerwrap">
+            <div>SYSTEM ENGINE: <span>ONLINE</span></div>
+            <div>LOCATION: SURAT, GUJARAT</div>
+            <div>TEMPORAL MARK: &copy; 2026 MAYANK BISHT</div>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // --- A. Elastic Interaction Cursor Tracking ---
-            const pointerNode = document.getElementById('cursor-pointer');
-            const haloNode = document.getElementById('cursor-halo');
+            const dotCursor = document.getElementById('cursordot');
+            const circleCursor = document.getElementById('cursorcircle');
+
+            document.addEventListener('mousemove', (event) => {
+                const clickX = event.clientX;
+                const clickY = event.clientY;
+
+                dotCursor.style.left = `${clickX}px`;
+                dotCursor.style.top = `${clickY}px`;
+
+                circleCursor.animate({
+                    left: `${clickX}px`,
+                    top: `${clickY}px`
+                }, { duration: 350, fill: "forwards", easing: "ease-out" });
+            });
+
+            const trackingTargets = document.querySelectorAll('a, button, input, textarea, .formsubmitbtn');
+            trackingTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => document.body.classList.add('ishovering'));
+                target.addEventListener('mouseleave', () => document.body.classList.remove('ishovering'));
+            });
+
+            const mainNavbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 40) mainNavbar.classList.add('scrolled');
+                else mainNavbar.classList.remove('scrolled');
+            });
+
+            const targetOutputSpan = document.getElementById('typedtext');
+            const vocabularyArray = ["Digital Marketing", "Video Editing", "Graphic Designing", "Business Systems"];
+            let arrayIterator = 0;
+            let characterIterator = 0;
+            let deletionModeActive = false;
+
+            function processTypewriterState() {
+                const focusedString = vocabularyArray[arrayIterator];
+
+                if (deletionModeActive) {
+                    targetOutputSpan.textContent = focusedString.substring(0, characterIterator - 1);
+                    characterIterator--;
+                } else {
+                    targetOutputSpan.textContent = focusedString.substring(0, characterIterator + 1);
+                    characterIterator++;
+                }
+
+                let executionSpeed = deletionModeActive ? 40 : 80;
+
+                if (!deletionModeActive && characterIterator === focusedString.length) {
+                    executionSpeed = 2200; 
+                    deletionModeActive = true;
+                } else if (deletionModeActive && characterIterator === 0) {
+                    deletionModeActive = false;
+                    arrayIterator = (arrayIterator + 1) % vocabularyArray.length;
+                    executionSpeed = 400; 
+                }
+
+                setTimeout(processTypewriterState, executionSpeed);
+            }
+            processTypewriterState();
+
+            const observedElements = document.querySelectorAll('.reveal');
             
-            document.addEventListener('mousemove', (coordinates) => {
-                const horizontalX = coordinates.clientX;
-                const verticalY = coordinates.clientY;
-                
-                pointerNode.style.left = `${horizontalX}px`;
-                pointerNode.style.top = `${verticalY}px`;
-                
-                haloNode.animate({
-                    left: `${horizontalX}px`,
-                    top: `${verticalY}px`
-                }, { duration: 400, fill: "forwards", easing: "ease-out" });
-            });
+            const layoutIntersectionObserver = new IntersectionObserver((observedEntries, internalObserver) => {
+                observedEntries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
 
-            // Interactive element state modifiers
-            const clickables = document.querySelectorAll('a, button, input, textarea, .bullet');
-            clickables.forEach(node => {
-                node.addEventListener('mouseenter', () => document.body.classList.add('state-interactive'));
-                node.addEventListener('mouseleave', () => document.body.classList.remove('state-interactive'));
-            });
+                    entry.target.classList.add('active');
 
-            // --- B. Slide Deck Navigation Core Logic ---
-            const slides = document.querySelectorAll('.slide-deck');
-            const navigationTabs = document.querySelectorAll('.nav-tab');
-            const linearBullets = document.querySelectorAll('.bullet');
-            let workingSlideIndex = 0;
-            let navigationThrottleActive = false;
-
-            window.switchSlideDeck = function(requestedIndex) {
-                if (requestedIndex < 0 || requestedIndex >= slides.length) return;
-                
-                // Clear active states across infrastructure components
-                slides[workingSlideIndex].classList.remove('active-slide');
-                navigationTabs[workingSlideIndex].classList.remove('active-tab');
-                linearBullets[workingSlideIndex].classList.remove('active-bullet');
-                
-                // Establish new indexes and apply activation states
-                workingSlideIndex = requestedIndex;
-                slides[workingSlideIndex].classList.add('active-slide');
-                navigationTabs[workingSlideIndex].add ? navigationTabs[workingSlideIndex].add('active-tab') : navigationTabs[workingSlideIndex].classList.add('active-tab');
-                linearBullets[workingSlideIndex].classList.add('active-bullet');
-
-                // Evaluate Skill Matrix Progress Line Injections dynamically
-                if (workingSlideIndex === 2) {
-                    const progressBars = slides[workingSlideIndex].querySelectorAll('.bar-injector-fill');
-                    progressBars.forEach(bar => {
-                        bar.style.width = bar.getAttribute('data-target-width');
+                    const metricBars = entry.target.querySelectorAll('.progressfill');
+                    metricBars.forEach(bar => {
+                        bar.style.width = bar.getAttribute('data-width');
                     });
-                }
-            };
 
-            // Capture mouse wheel dynamics for sliding translation vectors
-            window.addEventListener('wheel', (scrollEvent) => {
-                // Ignore device gesture routing on low resolution breakpoints
-                if (window.innerWidth <= 1024) return;
+                    internalObserver.unobserve(entry.target);
+                });
+            }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 
-                if (navigationThrottleActive) return;
-                navigationThrottleActive = true;
+            observedElements.forEach(element => layoutIntersectionObserver.observe(element));
 
-                if (scrollEvent.deltaY > 0) {
-                    if (workingSlideIndex < slides.length - 1) {
-                        switchSlideDeck(workingSlideIndex + 1);
-                    }
-                } else {
-                    if (workingSlideIndex > 0) {
-                        switchSlideDeck(workingSlideIndex - 1);
-                    }
-                }
+            const particleCanvas = document.getElementById('particlecanvas');
+            const canvasContext = particleCanvas.getContext('2d');
+            let systemNodeArray = [];
 
-                setTimeout(() => { navigationThrottleActive = false; }, 900);
-            });
-
-            // --- C. Text Compilation Node (Typewriter Script Engine) ---
-            const injectionElement = document.getElementById("text-injector-node");
-            const structuralLexicon = ["Digital Marketer", "Video Editor", "Concept Researcher", "Data Analyst"];
-            let phraseCycleIndex = 0;
-            let characterCycleIndex = 0;
-            let processPhaseDeleting = false;
-
-            function sequenceTypewriterWorkflow() {
-                const activeTargetPhrase = structuralLexicon[phraseCycleIndex];
-                
-                if (processPhaseDeleting) {
-                    injectionElement.textContent = activeTargetPhrase.substring(0, characterCycleIndex - 1);
-                    characterCycleIndex--;
-                } else {
-                    injectionElement.textContent = activeTargetPhrase.substring(0, characterCycleIndex + 1);
-                    characterCycleIndex++;
-                }
-
-                let chronologicalSpeed = processPhaseDeleting ? 40 : 90;
-
-                if (!processPhaseDeleting && characterCycleIndex === activeTargetPhrase.length) {
-                    chronologicalSpeed = 2200; // Pause execution when structural string is complete
-                    processPhaseDeleting = true;
-                } else if (processPhaseDeleting && characterCycleIndex === 0) {
-                    processPhaseDeleting = false;
-                    phraseCycleIndex = (phraseCycleIndex + 1) % structuralLexicon.length;
-                    chronologicalSpeed = 400; // Break segment prior to processing secondary string
-                }
-
-                setTimeout(sequenceTypewriterWorkflow, chronologicalSpeed);
-            }
-            
-            // Invoke script engine loops
-            sequenceTypewriterWorkflow();
-
-            // --- D. Multi-Color Mathematical Particle System Generator ---
-            const gridCanvas = document.getElementById('particle-matrix');
-            const renderingContext = gridCanvas.getContext('2d');
-            let runtimeArray = [];
-
-            function calibrateCanvasGeometry() {
-                gridCanvas.width = window.innerWidth;
-                gridCanvas.height = window.innerHeight;
-                generateInitialNodes();
+            function structuralResizeEvent() {
+                particleCanvas.width = window.innerWidth;
+                particleCanvas.height = window.innerHeight;
+                populateSystemNodes();
             }
 
-            class SpaceNode {
-                constructor(coordX, coordY, trajectoryX, trajectoryY, nodeScale, architecturalColor) {
-                    this.x = coordX; this.y = coordY;
-                    this.dx = trajectoryX; this.dy = trajectoryY;
-                    this.size = nodeScale; this.color = architecturalColor;
+            class EngineeringNode {
+                constructor(posX, posY, deltaX, deltaY, nodeRadius, hexadecimalColor) {
+                    this.x = posX; this.y = posY;
+                    this.dx = deltaX; this.dy = deltaY;
+                    this.size = nodeRadius; this.color = hexadecimalColor;
                 }
-                render() {
-                    renderingContext.beginPath();
-                    renderingContext.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                    renderingContext.fillStyle = this.color;
-                    renderingContext.fill();
+                project() {
+                    canvasContext.beginPath();
+                    canvasContext.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                    canvasContext.fillStyle = this.color;
+                    canvasContext.fill();
                 }
                 recalculate() {
-                    if (this.x > gridCanvas.width || this.x < 0) this.dx = -this.dx;
-                    if (this.y > gridCanvas.height || this.y < 0) this.dy = -this.dy;
+                    if (this.x > particleCanvas.width || this.x < 0) this.dx = -this.dx;
+                    if (this.y > particleCanvas.height || this.y < 0) this.dy = -this.dy;
                     this.x += this.dx;
                     this.y += this.dy;
-                    this.render();
+                    this.project();
                 }
             }
 
-            function generateInitialNodes() {
-                runtimeArray = [];
-                let calculatedDensityCoefficient = (gridCanvas.width * gridCanvas.height) / 11000;
-                let coreColorSpectra = ['#00f0ff', '#a200ff', '#ff007a', 'rgba(255,255,255,0.2)'];
+            function populateSystemNodes() {
+                systemNodeArray = [];
+                let mathematicalDensityIndex = (particleCanvas.width * particleCanvas.height) / 12000;
+                let colorationPalette = ['#00f0ff', '#a200ff', '#ff007a', 'rgba(255,255,255,0.1)'];
 
-                for (let iteration = 0; iteration < calculatedDensityCoefficient; iteration++) {
-                    let size = (Math.random() * 1.5) + 0.5;
-                    let x = Math.random() * (innerWidth - size * 2);
-                    let y = Math.random() * (innerHeight - size * 2);
-                    let dx = (Math.random() * 0.6) - 0.3;
-                    let dy = (Math.random() * 0.6) - 0.3;
-                    let color = coreColorSpectra[Math.floor(Math.random() * coreColorSpectra.length)];
-                    runtimeArray.push(new SpaceNode(x, y, dx, dy, size, color));
+                for (let count = 0; count < mathematicalDensityIndex; count++) {
+                    let radialScale = (Math.random() * 1.5) + 0.5;
+                    let positionHorizontal = Math.random() * (innerWidth - radialScale * 2);
+                    let positionVertical = Math.random() * (innerHeight - radialScale * 2);
+                    let shiftVelocityX = (Math.random() * 0.4) - 0.2;
+                    let shiftVelocityY = (Math.random() * 0.4) - 0.2;
+                    let determinedColor = colorationPalette[Math.floor(Math.random() * colorationPalette.length)];
+                    systemNodeArray.push(new EngineeringNode(positionHorizontal, positionVertical, shiftVelocityX, shiftVelocityY, radialScale, determinedColor));
                 }
             }
 
-            function frameProcessLoop() {
-                requestAnimationFrame(frameProcessLoop);
-                renderingContext.clearRect(0, 0, innerWidth, innerHeight);
-                for (let index = 0; index < runtimeArray.length; index++) {
-                    runtimeArray[index].recalculate();
+            function continuousRendereEngineLoop() {
+                requestAnimationFrame(continuousRendereEngineLoop);
+                canvasContext.clearRect(0, 0, innerWidth, innerHeight);
+                for (let nodeIndex = 0; nodeIndex < systemNodeArray.length; nodeIndex++) {
+                    systemNodeArray[nodeIndex].recalculate();
                 }
-                interlinkVectorNodes();
+                drawEcosystemLinkages();
             }
 
-            function interlinkVectorNodes() {
-                for (let elementOuter = 0; elementOuter < runtimeArray.length; elementOuter++) {
-                    for (let elementInner = elementOuter; elementInner < runtimeArray.length; elementInner++) {
-                        let spatialDistanceVector = ((runtimeArray[elementOuter].x - runtimeArray[elementInner].x) * (runtimeArray[elementOuter].x - runtimeArray[elementInner].x))
-                                                     + ((runtimeArray[elementOuter].y - runtimeArray[elementInner].y) * (runtimeArray[elementOuter].y - runtimeArray[elementInner].y));
-                        if (spatialDistanceVector < (gridCanvas.width / 12) * (gridCanvas.height / 12)) {
-                            let factorOpacity = 1 - (spatialDistanceVector / 14000);
-                            renderingContext.strokeStyle = `rgba(0, 240, 255, ${factorOpacity * 0.06})`;
-                            renderingContext.lineWidth = 1;
-                            renderingContext.beginPath();
-                            renderingContext.moveTo(runtimeArray[elementOuter].x, runtimeArray[elementOuter].y);
-                            renderingContext.lineTo(runtimeArray[elementInner].x, runtimeArray[elementInner].y);
-                            renderingContext.stroke();
+            function drawEcosystemLinkages() {
+                for (let pivotIndex = 0; pivotIndex < systemNodeArray.length; pivotIndex++) {
+                    for (let traceIndex = pivotIndex; traceIndex < systemNodeArray.length; traceIndex++) {
+                        let distanceFormulaSum = ((systemNodeArray[pivotIndex].x - systemNodeArray[traceIndex].x) * (systemNodeArray[pivotIndex].x - systemNodeArray[traceIndex].x))
+                                                     + ((systemNodeArray[pivotIndex].y - systemNodeArray[traceIndex].y) * (systemNodeArray[pivotIndex].y - systemNodeArray[traceIndex].y));
+                        if (distanceFormulaSum < (particleCanvas.width / 13) * (particleCanvas.height / 13)) {
+                            let linkOpacityAlpha = 1 - (distanceFormulaSum / 15000);
+                            canvasContext.strokeStyle = `rgba(0, 240, 255, ${linkOpacityAlpha * 0.05})`;
+                            canvasContext.lineWidth = 1;
+                            canvasContext.beginPath();
+                            canvasContext.moveTo(systemNodeArray[pivotIndex].x, systemNodeArray[pivotIndex].y);
+                            canvasContext.lineTo(systemNodeArray[traceIndex].x, systemNodeArray[traceIndex].y);
+                            canvasContext.stroke();
                         }
                     }
                 }
             }
 
-            window.addEventListener('resize', calibrateCanvasGeometry);
-            calibrateCanvasGeometry();
-            frameProcessLoop();
+            window.addEventListener('resize', structuralResizeEvent);
+            structuralResizeEvent();
+            continuousRendereEngineLoop();
         });
     </script>
 </body>
